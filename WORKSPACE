@@ -85,6 +85,15 @@ http_file(
 )
 
 http_file(
+    name = "wheel_0_31_0_whl",
+    sha256 = "9cdc8ab2cc9c3c2e2727a4b67c22881dbb0e1c503d592992594c5e131c867107",
+    # From https://pypi.python.org/pypi/wheel/0.31.0
+    url = ("https://pypi.python.org/packages/1b/d2/" +
+           "22cde5ea9af055f81814f9f2545f5ed8a053eb749c08d186b369959189a8/" +
+           "wheel-0.31.0-py2.py3-none-any.whl"),
+)
+
+http_file(
     name = "mock_whl",
     sha256 = "5ce3c71c5545b472da17b72268978914d0252980348636840bd34a00b5cc96c1",
     # From https://pypi.python.org/pypi/mock
