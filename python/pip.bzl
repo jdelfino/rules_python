@@ -22,8 +22,6 @@ def _pip_import_impl(repository_ctx):
   # requirements.bzl without it.
   repository_ctx.file("BUILD", "")
   # To see the output, pass: quiet=False
-  print('execute python')
-
   args = [
     "python", repository_ctx.path(repository_ctx.attr._script),
     "--name", repository_ctx.attr.name,
