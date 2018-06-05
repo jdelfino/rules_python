@@ -25,9 +25,12 @@ if [ "$#" -eq 0 ] ; then
   docker build --no-cache -f tools/update_tools/Dockerfile --tag rules_python:update_tools .
   docker run -v"$PWD":/opt/rules_python_source rules_python:update_tools
 elif [ "$#" -eq 1 -a "$1" == "--nodocker" ] ; then
-  bazel build //rules_python:piptool.par //rules_python:whltool.par
-  cp bazel-bin/rules_python/piptool.par tools/piptool.par
-  cp bazel-bin/rules_python/whltool.par tools/whltool.par
+  bazel build //rules_python:piptool.par //rules_python:piptool_v2.par \
+              //rules_python:whltool.par //rules_python:whltool_v2.par
+  cp bazel-bin/rules_python/piptool.par    tools/piptool.par
+  cp bazel-bin/rules_python/piptool_v2.par tools/piptool_v2.par
+  cp bazel-bin/rules_python/whltool.par    tools/whltool.par
+  cp bazel-bin/rules_python/whltool_v2.par tools/whltool_v2.par
 else
   usage
 fi
