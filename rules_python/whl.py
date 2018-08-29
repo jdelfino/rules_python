@@ -62,7 +62,7 @@ def recurse_split_extra(parsed_parts):
       raise Exception('unhandled part: ' + repr(part))
 
   # if the first item is a dangling boolean operator: trim it
-  if len(remaining) > 0 and isinstance(remaining[0], basestring):
+  if len(remaining) > 0 and isinstance(remaining[0], str):
     remaining = remaining[1:]
   return extra, remaining
 
