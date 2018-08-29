@@ -17,7 +17,7 @@ import argparse
 import json
 import os
 import re
-import rfc822
+import email
 import sys
 import shutil
 import zipfile
@@ -208,7 +208,7 @@ class Wheel(object):
   def _parse_metadata(self, file_object):
     # the METADATA file is in PKG-INFO format, which is a sequence of RFC822 headers:
     # https://www.python.org/dev/peps/pep-0241/
-    message = rfc822.Message(file_object)
+    message = email.parser.HeaderParser().parse(file_object)
 
     # Requires-Dist format:
     # https://packaging.python.org/specifications/core-metadata/#requires-dist-multiple-use
