@@ -145,7 +145,7 @@ class Wheel(object):
       except KeyError:
           pass
       # fall back to METADATA file (https://www.python.org/dev/peps/pep-0427/)
-      with whl.open(self._dist_info() + '/METADATA') as f:
+      with whl.open(self._dist_info() + '/METADATA', 'r') as f:
         return self._parse_metadata(f)
 
   def name(self):
@@ -210,8 +210,7 @@ class Wheel(object):
     # the METADATA file is in PKG-INFO format, which is a sequence of RFC822 headers:
     # https://www.python.org/dev/peps/pep-0241/
     # StringIO is required for python2/3 compat
-    sio = io.StringIO(unicode(file_object.read(), "utf-8"))
-    message = email.parser.HeaderParser().parse(sio)
+    message = email.parser.HeaderParser().parse(file_object)
 
     # Requires-Dist format:
     # https://packaging.python.org/specifications/core-metadata/#requires-dist-multiple-use
