@@ -51,11 +51,11 @@ def recurse_split_extra(parsed_parts):
         extra = value.value
 
         # if the previous item is now a dangling boolean operator: trim it
-        if len(remaining) > 0 and isinstance(remaining[-1], basestring):
+        if len(remaining) > 0 and isinstance(remaining[-1], str):
           remaining = remaining[:-1]
       else:
         remaining.append(part)
-    elif isinstance(part, basestring):
+    elif isinstance(part, str):
       # must be an operator: just append it
       remaining.append(part)
     else:
@@ -73,7 +73,7 @@ def recurse_str(parsed_parts):
       out += '(' + recurse_str(part) + ')'
     elif isinstance(part, tuple):
       out += ' '.join(p.serialize() for p in part)
-    elif isinstance(part, basestring):
+    elif isinstance(part, str):
       out += ' ' + part + ' '
     else:
       raise Exception('unhandled part: ' + repr(part))
