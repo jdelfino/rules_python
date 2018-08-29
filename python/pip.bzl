@@ -13,7 +13,7 @@
 # limitations under the License.
 """Import pip requirements into Bazel."""
 
-def _pip_import_impl(repository_ctx):
+def _shared_pip_import_impl(python_interpreter, repository_ctx):
   """Core implementation of pip_import."""
 
   # Add an empty top-level BUILD file.
@@ -24,7 +24,8 @@ def _pip_import_impl(repository_ctx):
 
   # To see the output, pass: quiet=False
   result = repository_ctx.execute([
-    "python", repository_ctx.path(repository_ctx.attr._script),
+    python_interpreter, repository_ctx.path(repository_ctx.attr._script),
+    "--python_interpreter", python_interpreter,
     "--name", repository_ctx.attr.name,
     "--input", repository_ctx.path(repository_ctx.attr.requirements),
     "--output", repository_ctx.path("requirements.bzl"),
@@ -34,20 +35,41 @@ def _pip_import_impl(repository_ctx):
   if result.return_code:
     fail("pip_import failed: %s (%s)" % (result.stdout, result.stderr))
 
+_shared_attrs = {
+    "requirements": attr.label(
+        allow_files = True,
+        mandatory = True,
+        single_file = True,
+    ),
+    "_script": attr.label(
+        executable = True,
+        default = Label("//tools:piptool.par"),
+        cfg = "host",
+    ),
+}
+
+def _pip_import_impl(repository_ctx):
+    _shared_pip_import_impl("python", repository_ctx)
+
 pip_import = repository_rule(
-    attrs = {
-        "requirements": attr.label(
-            allow_files = True,
-            mandatory = True,
-            single_file = True,
-        ),
-        "_script": attr.label(
-            executable = True,
-            default = Label("//tools:piptool.par"),
-            cfg = "host",
-        ),
-    },
+    attrs = _shared_attrs,
     implementation = _pip_import_impl,
+)
+
+def _pip2_import_impl(repository_ctx):
+    _shared_pip_import_impl("python2", repository_ctx)
+
+pip2_import = repository_rule(
+    attrs = _shared_attrs,
+    implementation = _pip2_import_impl,
+)
+
+def _pip3_import_impl(repository_ctx):
+    _shared_pip_import_impl("python3", repository_ctx)
+
+pip3_import = repository_rule(
+    attrs = _shared_attrs,
+    implementation = _pip3_import_impl,
 )
 
 """A rule for importing <code>requirements.txt</code> dependencies into Bazel.
