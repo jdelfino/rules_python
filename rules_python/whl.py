@@ -144,9 +144,11 @@ class Wheel(object):
           return json.loads(f.read().decode("utf-8"))
       except KeyError:
           pass
+      data = whl.read(self._dist_info() + '/METADATA')
+      return self._parse_metadata(io.StringIO(data.decode("utf-8")))
       # fall back to METADATA file (https://www.python.org/dev/peps/pep-0427/)
-      with whl.open(self._dist_info() + '/METADATA', 'r') as f:
-        return self._parse_metadata(f)
+      #with whl.open(self._dist_info() + '/METADATA', 'r') as f:
+      #  return self._parse_metadata(f)
 
   def name(self):
     return self.metadata().get('name')
