@@ -14,6 +14,7 @@
 """The whl modules defines classes for interacting with Python packages."""
 
 import argparse
+import io
 import json
 import os
 import re
@@ -208,7 +209,9 @@ class Wheel(object):
   def _parse_metadata(self, file_object):
     # the METADATA file is in PKG-INFO format, which is a sequence of RFC822 headers:
     # https://www.python.org/dev/peps/pep-0241/
-    message = email.parser.HeaderParser().parse(file_object)
+    # StringIO is required for python2/3 compat
+    sio = io.StringIO(unicode(file_object.read(), "utf-8"))
+    message = email.parser.HeaderParser().parse(sio)
 
     # Requires-Dist format:
     # https://packaging.python.org/specifications/core-metadata/#requires-dist-multiple-use
