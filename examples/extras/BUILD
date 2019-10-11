@@ -16,7 +16,7 @@ package(default_visibility = ["//visibility:public"])
 licenses(["notice"])  # Apache 2.0
 
 load("@examples_extras//:requirements.bzl", "requirement")
-load("//python:python.bzl", "py_test")
+load("//python:defs.bzl", "py_test")
 
 py_test(
     name = "extras_test",
@@ -26,4 +26,5 @@ py_test(
         # Make sure that we can resolve the "extra" dependency
         requirement("googleapis-common-protos[grpc]"),
     ],
+    python_version = "PY2",
 )
