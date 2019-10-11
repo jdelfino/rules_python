@@ -14,11 +14,6 @@
 
 workspace(name = "rules_python")
 
-local_repository(
-    name = "io_bazel_rules_python",
-    path = ".",
-)
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
 http_archive(
